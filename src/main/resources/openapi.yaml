@@ -1,0 +1,99 @@
+# Ref. https://swagger.io/specification/
+openapi: '3.0.3'
+info:
+  title: 'Java Mongo Skeleton'
+  version: 'automatically set by codes'
+paths:
+  '/v1/students/{studentId}':
+    get:
+      tags:
+        - Student
+      parameters:
+        - name: studentId
+          required: true
+          in: path
+      responses:
+        200:
+          description: 'returns the student information'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Student'
+        404:
+          description: 'the student does not exist'
+  '/v1/teachers':
+    post:
+      tags:
+        - Teacher
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Teacher'
+      responses:
+        200:
+          description: 'add a teacher'
+        400:
+          description: 'request is bad'
+  '/v1/teachers/{teacherId}':
+    get:
+      tags:
+        - Teacher
+      parameters:
+        - name: teacherId
+          required: true
+          in: path
+      responses:
+        200:
+          description: 'returns the teacher information'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Teacher'
+        404:
+          description: 'the teacher does not exist'
+components:
+  schemas:
+    Student:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+        score:
+          type: integer
+        teacherId:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+          example: '2022-03-04T12:34:56.789Z'
+          readOnly: true
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2022-03-04T12:34:56.789Z'
+          readOnly: true
+    Teacher:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+          example: '2022-03-04T12:34:56.789Z'
+          readOnly: true
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2022-03-04T12:34:56.789Z'
+          readOnly: true
+tags:
+  - name: Teacher
+  - name: Student

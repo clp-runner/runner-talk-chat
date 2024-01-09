@@ -1,0 +1,18 @@
+version: '3.9'
+services:
+  mongodb:
+    image: mongo:5.0.23
+    container_name: runner-talk-mongo
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=runnertalk
+      - MONGO_INITDB_ROOT_PASSWORD=runnertalk
+      - MONGO_INITDB_DATABASE=runnertalk
+    volumes:
+      - ./volumes/mongo/db:/data/db
+      - ./volumes/mongo/dev.archive:/Databases/dev.archive
+      - ./volumes/mono/production:/Databases/production
+      - ./mongod.conf:/etc/mongod.conf
+    network_mode: 'bridge'

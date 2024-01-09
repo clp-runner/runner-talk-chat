@@ -1,0 +1,14 @@
+{
+  "title": [
+    {
+      "pattern": "^(?:RT)-\\d+\\s\\w+",
+      "message": "Your title is invalid"
+    }
+  ],
+  "head.ref": [
+    {
+      "pattern": "^(?:rt)-\\d+-\\w+$",
+      "message": "Your branch name is invalid"
+    }
+  ]
+}

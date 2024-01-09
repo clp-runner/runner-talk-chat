@@ -1,0 +1,33 @@
+<!-- Ref. https://docs.spring.io/spring-boot/docs/3.0.x/reference/html/features.html#features.logging -->
+<configuration>
+  <appender name="plain" class="ch.qos.logback.core.ConsoleAppender">
+    <withJansi>true</withJansi>
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <pattern>%d{HH:mm:ss.SSS} [%thread] %replace([%X{CorrelationId}] ){'^\[\] $',''}%highlight(%-5level) %green(%logger{36}) - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <appender name="json" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+      <layout class="com.wesang.common.log.JsonLogLayout" />
+    </encoder>
+  </appender>
+
+  <appender name="logstash" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+      <timeZone>UTC</timeZone>
+    </encoder>
+  </appender>
+
+  <springProfile name="default | dev | test">
+    <root>
+      <appender-ref ref="plain" />
+    </root>
+  </springProfile>
+
+  <springProfile name="prod | stage">
+    <root>
+      <appender-ref ref="logstash" />
+    </root>
+  </springProfile>
+</configuration>
