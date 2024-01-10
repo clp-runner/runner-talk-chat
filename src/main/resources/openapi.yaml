@@ -1,89 +1,125 @@
 # Ref. https://swagger.io/specification/
 openapi: '3.0.3'
 info:
-  title: 'Java Mongo Skeleton'
+  title: 'Runner Talk Chat'
   version: 'automatically set by codes'
 paths:
-  '/v1/students/{studentId}':
+  '/api/v1/chat/rooms/{roomId}':
     get:
       tags:
-        - Student
+        - ChatRoom
       parameters:
-        - name: studentId
+        - name: roomId
           required: true
           in: path
+          schema:
+            type: string
       responses:
         200:
-          description: 'returns the student information'
+          description: 'returns the chat room information'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Student'
+                $ref: '#/components/schemas/ChatRoom'
         404:
-          description: 'the student does not exist'
-  '/v1/teachers':
+          description: 'the chat room does not exist'
+    delete:
+      tags:
+        - ChatRoom
+      parameters:
+        - name: roomId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        200:
+          description: 'delete the chat room information'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatRoom'
+        404:
+          description: 'the chat room does not exist'
+  '/api/v1/chat/rooms':
+    get:
+      tags:
+        - ChatRoom
+      responses:
+        200:
+          description: 'returns the chat room information list'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatRoom'
     post:
       tags:
-        - Teacher
+        - ChatRoom
       requestBody:
+        required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Teacher'
+              $ref: '#/components/schemas/ChatRoom'
       responses:
-        200:
-          description: 'add a teacher'
-        400:
-          description: 'request is bad'
-  '/v1/teachers/{teacherId}':
-    get:
-      tags:
-        - Teacher
-      parameters:
-        - name: teacherId
-          required: true
-          in: path
-      responses:
-        200:
-          description: 'returns the teacher information'
+        201:
+          description: 'create the chat room information'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Teacher'
+                $ref: '#/components/schemas/ChatRoom'
+    put:
+      tags:
+        - ChatRoom
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatRoom'
+      responses:
+        200:
+          description: 'returns the chat room information'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatRoom'
         404:
-          description: 'the teacher does not exist'
+          description: 'the student does not exist'
 components:
   schemas:
-    Student:
+    ChatRoom:
       type: object
       properties:
         id:
-          type: integer
+          type: string
+          example: 'room1'
           readOnly: true
         name:
           type: string
-        score:
-          type: integer
-        teacherId:
-          type: integer
-        createdAt:
+          example: 'chat room name'
+        description:
           type: string
-          format: date-time
-          example: '2022-03-04T12:34:56.789Z'
-          readOnly: true
-        updatedAt:
+          example: 'chat room description'
+        creatorId:
           type: string
-          format: date-time
-          example: '2022-03-04T12:34:56.789Z'
+          example: 'user1'
           readOnly: true
-    Teacher:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        name:
-          type: string
+        participants:
+          type: array
+          items:
+            type: string
+          example: ['user1', 'user2']
+        lastMessage:
+          type: object
+          properties:
+            content:
+              type: string
+              example: 'message content'
+            timestamp:
+              type: string
+              format: date-time
+              example: '2022-03-04T12:34:56.789Z'
         createdAt:
           type: string
           format: date-time
@@ -95,5 +131,4 @@ components:
           example: '2022-03-04T12:34:56.789Z'
           readOnly: true
 tags:
-  - name: Teacher
-  - name: Student
+  - name: ChatRoom
