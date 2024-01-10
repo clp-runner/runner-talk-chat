@@ -20,13 +20,23 @@ class ChatRoom(
     private var lastMessage: LastMessage? = null
 ) : MongoBaseDocument() {
 
-    fun updateLastMessage(content: String, timestamp: ZonedDateTime) {
-        this.lastMessage = LastMessage(content, timestamp)
-        this.updatedAt = ZonedDateTime.now()
-    }
-
     data class LastMessage(
         val content: String,
         val timestamp: ZonedDateTime
     )
+
+    fun updateChatRoom(updatedChatRoom: ChatRoom) {
+        this.name = updatedChatRoom.name
+        this.description = updatedChatRoom.description
+        this.creatorId = updatedChatRoom.creatorId
+        this.participants = updatedChatRoom.participants
+        updatedChatRoom.lastMessage?.let {
+            updateLastMessage(it.content, it.timestamp)
+        }
+    }
+
+    fun updateLastMessage(content: String, timestamp: ZonedDateTime) {
+        this.lastMessage = LastMessage(content, timestamp)
+        this.updatedAt = ZonedDateTime.now()
+    }
 }
